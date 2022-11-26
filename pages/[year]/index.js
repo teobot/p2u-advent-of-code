@@ -49,13 +49,13 @@ export default function Year() {
     if (router.query.year) {
       fetchYear(router.query.year);
     }
-  }, [router.query.year]);
+  }, [fetchYear, router.query.year]);
 
   useEffect(() => {
     if (eventData) {
       completionTimeline();
     }
-  }, [eventData]);
+  }, [completionTimeline, eventData]);
 
   if (eventData) {
     const { event, members } = eventData;
@@ -66,7 +66,7 @@ export default function Year() {
           <h5 className="p-0 m-0">
             <Badge variant="secondary">{eventData.members.length}</Badge>{" "}
             members participated - at{" "}
-            <a rel="noreferrer" target="_blank" href="https://adventofcode.com/">Advent of Code</a>
+            <a rel="noreferrer" target="_blank" href={`https://adventofcode.com/${event}`}>Advent of Code {event}</a>
           </h5>
         </div>
 

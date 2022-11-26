@@ -2,7 +2,13 @@ import { useState, useEffect, useContext, createContext } from "react";
 import "../styles/globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from "react-bootstrap";
-import { addHours, compareAsc, compareDesc, formatDistance, startOfDay } from "date-fns";
+import {
+  addHours,
+  compareAsc,
+  compareDesc,
+  formatDistance,
+  startOfDay,
+} from "date-fns";
 
 export const AdventOfCodeDataContext = createContext();
 
@@ -23,8 +29,11 @@ function MyApp({ Component, pageProps }) {
   const fetchYears = async () => {
     try {
       const req = await fetch("/api/years");
-      const res = await req.json();
-      setYears(res.files);
+      
+      if (req.status === 200) {
+        const res = await req.json();
+        setYears(res.files);
+      }
     } catch (error) {
       console.log(error);
     }
