@@ -1,4 +1,4 @@
-export default data = {
+const data = {
   "event": "2021",
   "owner_id": 746545,
   "closed_at": "2022-01-01T00:00:00Z",
@@ -151,3 +151,5 @@ export default data = {
     }
   }
 }
+
+export default data;
