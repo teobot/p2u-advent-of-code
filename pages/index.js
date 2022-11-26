@@ -9,7 +9,8 @@ export default function Home() {
 
   useEffect(() => {
     fetchYears();
-  }, []);
+  }, [fetchYears]);
+
   return (
     <>
       {JSON.stringify()}{" "}

@@ -1,6 +1,7 @@
-{
+const data = {
   "event": "2021",
   "owner_id": 746545,
+  "closed_at": "2022-01-01T00:00:00Z",
   "members": {
     "746545": {
       "last_star_ts": 1640089238,
@@ -150,3 +151,5 @@
     }
   }
 }
+
+export default data;
