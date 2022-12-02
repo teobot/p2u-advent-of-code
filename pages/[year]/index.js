@@ -10,7 +10,7 @@ import { Chart } from "react-google-charts";
 import Badge from "react-bootstrap/Badge";
 
 import { AiFillStar } from "react-icons/ai";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, formatDistance, addMinutes } from "date-fns";
 
 export default function Year() {
   const [selectedUser, setSelectedUser] = useState("");
@@ -49,13 +49,7 @@ export default function Year() {
     if (router.query.year) {
       fetchYear(router.query.year);
     }
-  }, [fetchYear, router.query.year]);
-
-  useEffect(() => {
-    if (eventData) {
-      completionTimeline();
-    }
-  }, [completionTimeline, eventData]);
+  }, [router.query.year]);
 
   if (eventData) {
     const { event, members } = eventData;
@@ -64,9 +58,31 @@ export default function Year() {
         <div className="w-100 border-bottom pb-3 mb-3 text-light">
           <h1 className="p-0 m-0">Advent of Code {event} statistics</h1>
           <h5 className="p-0 m-0">
-            <Badge variant="secondary">{eventData.members.length}</Badge>{" "}
+            <Badge variant={eventData.fromCached ? "primary" : "secondary"}>
+              {eventData.members.length}
+            </Badge>{" "}
             members participated - at{" "}
-            <a rel="noreferrer" target="_blank" href={`https://adventofcode.com/${event}`}>Advent of Code {event}</a>
+            <a
+              rel="noreferrer"
+              target="_blank"
+              href={`https://adventofcode.com/${event}`}
+            >
+              Advent of Code {event}
+            </a>{" "}
+            <span style={{ fontSize: "1rem" }}>
+              - last updated{" "}
+              <span style={{ textDecoration: "underline" }}>
+                {formatDistanceToNow(new Date(eventData.lastUpdated))}
+              </span>{" "}
+              ago, will update again in{" "}
+              <span style={{ textDecoration: "underline" }}>
+                {formatDistance(
+                  addMinutes(new Date(eventData.lastUpdated), 15),
+                  new Date()
+                )}
+                .
+              </span>
+            </span>
           </h5>
         </div>
 
@@ -79,10 +95,7 @@ export default function Year() {
               key={user + "_userSelected"}
               variant="dark"
             >
-              {user} -{" "}
-              <b>
-                {stars} <AiFillStar color="gold" />
-              </b>
+              {user}
             </Button>
           ))}
         </ButtonGroup>
@@ -243,7 +256,7 @@ export default function Year() {
           {
             // take the last 10 events
             getAllMembersStars()
-              .slice(-10)
+              .slice(0, 10)
               .map((item, index) => {
                 return (
                   <div
@@ -256,11 +269,17 @@ export default function Year() {
                     } text-light mb-3 p-1 border-secondary border-bottom`}
                     style={{ cursor: "pointer" }}
                   >
-                    <b>{item.user}</b> completed part{" "}
-                    <AiFillStar color="gold" /> <b>{item.part}</b> for day
-                    number <b>{item.task}</b> in{" "}
-                    <b>{timeTook(item.task, item.get_star_ts)}</b> about{" "}
-                    <b>{formatDistanceToNow(item.get_star_ts)}</b> ago.
+                    <b>{item.user}</b> completed task{" "}
+                    <AiFillStar color="gold" /> <b>{item.part}</b> for day{" "}
+                    <b>{item.task}</b> in{" "}
+                    <b>{timeTook(item.task, item.get_star_ts)}</b>
+                    {", "}
+                    <small>
+                      {formatDistanceToNow(item.get_star_ts, {
+                        addSuffix: true,
+                      })}
+                    </small>
+                    .
                   </div>
                 );
               })
