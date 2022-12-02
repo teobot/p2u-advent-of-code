@@ -18,6 +18,7 @@ function MyApp({ Component, pageProps }) {
 
   const fetchYear = async (year) => {
     try {
+      console.log("fetching year: " + year);
       const req = await fetch("/api/" + year);
       const res = await req.json();
       setEventData(parseData(res));
@@ -29,7 +30,7 @@ function MyApp({ Component, pageProps }) {
   const fetchYears = async () => {
     try {
       const req = await fetch("/api/years");
-      
+
       if (req.status === 200) {
         const res = await req.json();
         setYears(res.files);
@@ -42,6 +43,8 @@ function MyApp({ Component, pageProps }) {
   const parseData = (input) => {
     let d = {};
     d.event = input.event;
+    d.fromCached = input.fromCached;
+    d.lastUpdated = input.lastUpdated;
     d.members = [];
     //foreach key value in object
     for (const [memberKey, member] of Object.entries(input.members)) {
@@ -84,13 +87,13 @@ function MyApp({ Component, pageProps }) {
 
   const completionTimeline = () => {
     if (!eventData) return {};
+    console.log("completionTimeline");
     let completion_day_levels = {};
     eventData.members.forEach(
       ({ user, stars, local_score, last_star_ts, completion_day_level }) => {
         completion_day_level.forEach((completion_day_level_array) => {
           let task1 = completion_day_level_array[0] || null;
           let task2 = completion_day_level_array[1] || null;
-
           if (completion_day_levels[task1.task]) {
             completion_day_levels[task1.task || task2.task].users.push({
               user,
@@ -144,7 +147,7 @@ function MyApp({ Component, pageProps }) {
       });
     });
     return allMembersStars.sort((a, b) => {
-      return compareDesc(a.get_star_ts, b.get_star_ts);
+      return compareAsc(b.get_star_ts, a.get_star_ts);
     });
   };
 
