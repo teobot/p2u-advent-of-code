@@ -63,7 +63,7 @@ function MyApp({ Component, pageProps }) {
         completion_day_level.push(stars);
       }
       d.members.push({
-        user: member.name,
+        user: smartenText(member.name),
         stars: member.stars,
         local_score: member.local_score,
         last_star_ts: new Date(member.last_star_ts * 1000),
@@ -71,6 +71,19 @@ function MyApp({ Component, pageProps }) {
       });
     }
     return d;
+  };
+
+  const smartenText = (name) => {
+    let newName = name;
+    newName = newName.split("@")[0];
+
+    // remove numbers
+    newName = newName.replace(/[0-9]/g, " ");
+
+    // remove dashes
+    newName = newName.replace(/-/g, " ");
+
+    return newName;
   };
 
   const totalStars = () => {
@@ -82,7 +95,7 @@ function MyApp({ Component, pageProps }) {
   const highestStarUser = () => {
     if (!eventData) return 0;
 
-    return eventData.members.reduce((a, b) => (a.stars > b.stars ? a : b));
+    return eventData.members.sort((a, b) => b.stars - a.stars)[0];
   };
 
   const completionTimeline = () => {
