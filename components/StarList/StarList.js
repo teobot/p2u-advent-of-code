@@ -5,7 +5,7 @@ import { AdventOfCodeDataContext } from "../../pages/_app";
 import { Badge } from "react-bootstrap";
 
 export default function StarList() {
-  const { starLevelColors, selectedUser, eventData } = useContext(
+  const { starLevelColors, selectedUser, eventData, setSelectedUser } = useContext(
     AdventOfCodeDataContext
   );
 
