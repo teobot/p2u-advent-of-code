@@ -14,8 +14,6 @@ function Day({ index, user }) {
   );
   const isSelected = user.user === selectedUser;
 
-  console.log(user);
-
   return (
     <div className="m-1">
       <Badge
