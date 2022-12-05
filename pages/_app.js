@@ -15,10 +15,10 @@ export const AdventOfCodeDataContext = createContext();
 function MyApp({ Component, pageProps }) {
   const [eventData, setEventData] = useState(null);
   const [years, setYears] = useState([]);
+  const [selectedUser, setSelectedUser] = useState("");
 
   const fetchYear = async (year) => {
     try {
-      console.log("fetching year: " + year);
       const req = await fetch("/api/" + year);
       const res = await req.json();
       setEventData(parseData(res));
@@ -100,7 +100,6 @@ function MyApp({ Component, pageProps }) {
 
   const completionTimeline = () => {
     if (!eventData) return {};
-    console.log("completionTimeline");
     let completion_day_levels = {};
     eventData.members.forEach(
       ({ user, stars, local_score, last_star_ts, completion_day_level }) => {
@@ -164,6 +163,26 @@ function MyApp({ Component, pageProps }) {
     });
   };
 
+  const pieChartData = () => {
+    let array = [...eventData.members].map((member) => [
+      member.user,
+      member.stars,
+    ]);
+    return [["Task", "Hours per Day"]].concat(array);
+  };
+
+  const displaySlices = () => {
+    const chartData = pieChartData();
+    let userSelected = chartData.find((member) => member[0] === selectedUser);
+    let userSelectedIndex = chartData.indexOf(userSelected);
+    if (userSelectedIndex === -1) return {};
+    let obj = {};
+    obj[userSelectedIndex - 1] = { offset: 0.2 };
+    return obj;
+  };
+
+  const starLevelColors = ["success", "primary", "danger", "secondary"];
+
   return (
     <AdventOfCodeDataContext.Provider
       value={{
@@ -176,6 +195,11 @@ function MyApp({ Component, pageProps }) {
         completionTimeline,
         timeTook,
         getAllMembersStars,
+        selectedUser,
+        setSelectedUser,
+        pieChartData,
+        displaySlices,
+        starLevelColors,
       }}
     >
       <Container className="my-2">
