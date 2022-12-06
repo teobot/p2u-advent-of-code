@@ -98,6 +98,12 @@ function MyApp({ Component, pageProps }) {
     return eventData.members.sort((a, b) => b.stars - a.stars)[0];
   };
 
+  const highestLocalScore = () => {
+    if (!eventData) return 0;
+
+    return eventData.members.sort((a, b) => b.local_score - a.local_score)[0];
+  };
+
   const completionTimeline = () => {
     if (!eventData) return {};
     let completion_day_levels = {};
@@ -192,6 +198,7 @@ function MyApp({ Component, pageProps }) {
         fetchYears,
         totalStars: totalStars(),
         highestStarUser: highestStarUser(),
+        highestLocalScore: highestLocalScore(),
         completionTimeline,
         timeTook,
         getAllMembersStars,
