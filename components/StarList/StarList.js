@@ -10,7 +10,7 @@ import { BiMedal } from "react-icons/bi";
 export default function StarList() {
   const { starLevelColors, selectedUser, eventData, setSelectedUser } =
     useContext(AdventOfCodeDataContext);
-
+    
   return (
     <div className="w-100 h-100 py-2">
       {eventData.members
