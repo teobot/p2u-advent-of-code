@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import { AdventOfCodeDataContext } from "../../pages/_app";
+import { AdventOfCodeDataContext } from "../../context/useAOC";
 
 import { Badge } from "react-bootstrap";
 

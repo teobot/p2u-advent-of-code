@@ -6,7 +6,7 @@ import { AiFillStar } from "react-icons/ai";
 import { GiStarsStack } from "react-icons/gi";
 import { BiMedal } from "react-icons/bi";
 
-import { AdventOfCodeDataContext } from "../../pages/_app";
+import { AdventOfCodeDataContext } from "../../context/useAOC";
 
 export default function TotalSegment() {
   const { totalStars, highestStarUser, highestLocalScore } = useContext(

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import { ButtonGroup, Button } from "react-bootstrap";
 
-import { AdventOfCodeDataContext } from "../../pages/_app";
+import { AdventOfCodeDataContext } from "../../context/useAOC";
 
 export default function UserGroup() {
   const { eventData, setSelectedUser, selectedUser } = useContext(

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import { Chart } from "react-google-charts";
 
-import { AdventOfCodeDataContext } from "../../pages/_app";
+import { AdventOfCodeDataContext } from "../../context/useAOC";
 
 export default function GoogleChart() {
   const { setSelectedUser, pieChartData, displaySlices } = useContext(

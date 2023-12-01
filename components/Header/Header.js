@@ -2,9 +2,7 @@ import React, { useContext } from "react";
 
 import { Badge } from "react-bootstrap";
 
-import { formatDistanceToNow, formatDistance, addMinutes } from "date-fns";
-
-import { AdventOfCodeDataContext } from "../../pages/_app";
+import { AdventOfCodeDataContext } from "../../context/useAOC";
 
 export default function Header() {
   const { eventData } = useContext(AdventOfCodeDataContext);
@@ -22,21 +20,7 @@ export default function Header() {
           href={`https://adventofcode.com/${eventData.event}`}
         >
           Advent of Code {eventData.event}
-        </a>{" "}
-        <span style={{ fontSize: "1rem" }}>
-          - last updated{" "}
-          <span style={{ textDecoration: "underline" }}>
-            {formatDistanceToNow(new Date(eventData.lastUpdated))}
-          </span>{" "}
-          ago, will update again in{" "}
-          <span style={{ textDecoration: "underline" }}>
-            {formatDistance(
-              addMinutes(new Date(eventData.lastUpdated), 15),
-              new Date()
-            )}
-            .
-          </span>
-        </span>
+        </a>
       </h5>
     </div>
   );

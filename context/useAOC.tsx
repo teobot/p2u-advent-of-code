@@ -1,56 +1,21 @@
-import { useState, useEffect, useContext, createContext } from "react";
-import "../styles/globals.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { useState, createContext } from "react";
+
 import { Container } from "react-bootstrap";
-import {
-  addHours,
-  compareAsc,
-  compareDesc,
-  formatDistance,
-  startOfDay,
-} from "date-fns";
+import { addHours, compareAsc, formatDistance, startOfDay } from "date-fns";
 
-export const AdventOfCodeDataContext = createContext();
+export const AdventOfCodeDataContext = createContext<any>({});
 
-function MyApp({ Component, pageProps }) {
-  const [eventData, setEventData] = useState(null);
-  const [years, setYears] = useState([]);
-  const [selectedUser, setSelectedUser] = useState("");
-
-  const fetchYear = async (year) => {
-    try {
-      const req = await fetch("/api/" + year);
-      const res = await req.json();
-      setEventData(parseData(res));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const fetchYears = async () => {
-    try {
-      const req = await fetch("/api/years");
-
-      if (req.status === 200) {
-        const res = await req.json();
-        setYears(res.files);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+function MyApp({ initalAOC, children }) {
   const parseData = (input) => {
-    let d = {};
+    let d: any = {};
     d.event = input.event;
-    d.fromCached = input.fromCached;
-    d.lastUpdated = input.lastUpdated;
     d.members = [];
     //foreach key value in object
     for (const [memberKey, member] of Object.entries(input.members)) {
+      const _member: any = member;
       let completion_day_level = [];
       for (const [taskNumber, taskData] of Object.entries(
-        member.completion_day_level
+        _member.completion_day_level
       )) {
         let stars = [];
         for (const [kk, vv] of Object.entries(taskData)) {
@@ -63,10 +28,10 @@ function MyApp({ Component, pageProps }) {
         completion_day_level.push(stars);
       }
       d.members.push({
-        user: smartenText(member.name),
-        stars: member.stars,
-        local_score: member.local_score,
-        last_star_ts: new Date(member.last_star_ts * 1000),
+        user: smartenText(_member.name),
+        stars: _member.stars,
+        local_score: _member.local_score,
+        last_star_ts: new Date(_member.last_star_ts * 1000),
         completion_day_level,
       });
     }
@@ -85,6 +50,9 @@ function MyApp({ Component, pageProps }) {
 
     return newName;
   };
+
+  const [eventData] = useState(parseData(initalAOC));
+  const [selectedUser, setSelectedUser] = useState("");
 
   const totalStars = () => {
     if (!eventData) return 0;
@@ -192,10 +160,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <AdventOfCodeDataContext.Provider
       value={{
-        years,
         eventData,
-        fetchYear,
-        fetchYears,
         totalStars: totalStars(),
         highestStarUser: highestStarUser(),
         highestLocalScore: highestLocalScore(),
@@ -209,9 +174,7 @@ function MyApp({ Component, pageProps }) {
         starLevelColors,
       }}
     >
-      <Container className="my-2">
-        <Component {...pageProps} />
-      </Container>
+      <Container className="my-2">{children}</Container>
     </AdventOfCodeDataContext.Provider>
   );
 }

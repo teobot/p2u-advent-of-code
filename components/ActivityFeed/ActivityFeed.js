@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import { formatDistanceToNow } from "date-fns";
 
-import { AdventOfCodeDataContext } from "../../pages/_app";
+import { AdventOfCodeDataContext } from "../../context/useAOC";
 
 import { AiFillStar } from "react-icons/ai";
 
