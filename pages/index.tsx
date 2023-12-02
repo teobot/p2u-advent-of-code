@@ -64,7 +64,9 @@ export async function getServerSideProps({ req, res }) {
 
   const eventData = await request.json();
 
+  eventData.lastUpdated = new Date();
+
   return {
-    props: { eventData },
+    props: { eventData: JSON.parse(JSON.stringify(eventData)) },
   };
 }

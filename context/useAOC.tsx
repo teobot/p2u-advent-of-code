@@ -9,6 +9,7 @@ function MyApp({ initalAOC, children }) {
   const parseData = (input) => {
     let d: any = {};
     d.event = input.event;
+    d.lastUpdated = initalAOC.lastUpdated;
     d.members = [];
     //foreach key value in object
     for (const [memberKey, member] of Object.entries(input.members)) {
